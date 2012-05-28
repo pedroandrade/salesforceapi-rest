@@ -32,6 +32,10 @@ To get resources describe
 
     @sf.describe(:lead)
 
+To get resources describe
+
+    @sf.describe(:lead)
+
 ## Contributing
 
 1. Fork it
