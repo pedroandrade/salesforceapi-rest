@@ -7,7 +7,7 @@ require 'net/http'
 require 'active_resource'
 require 'httparty'
 
-module Salesforceapi
+module SalesforceApi
   module Rest
     class Client
       include HTTParty
@@ -42,7 +42,7 @@ module Salesforceapi
       end
 
 
-      def save(object, attributes)
+      def create(object, attributes)
 
         path = "/services/data/#{@api_version}/sobjects/#{object}/"
         target = @instance_uri + path

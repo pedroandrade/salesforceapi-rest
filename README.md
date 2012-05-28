@@ -18,7 +18,19 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+    @sf = SalesforceApi::Rest:Client(token, instance_url)
+    
+To create a sobject:
+    
+    @sf.create(:lead, {:Company => "Company Name", :LastName => "Allan", :Email => "lucas@email.com"})
+
+To get resources information
+
+    @sf.resources
+  
+To get resources describe
+
+    @sf.describe(:lead)
 
 ## Contributing
 
