@@ -92,7 +92,7 @@ module Salesforceapi
 
       def config_authorization!
         target = 'https://login.salesforce.com/services/oauth2/token'
-        parameters = {:grand_type => 'refresh_token', :client_id => @client_id, :client_secret => @client_secret,
+        parameters = {:grant_type => 'refresh_token', :client_id => @client_id, :client_secret => @client_secret,
           :refresh_token => @refresh_token}
         data = ActiveSupport::JSON::encode(parameters)
         resp = SalesforceApi::Request.do_request("POST", target, {"content-Type" => 'application/json'}, parameters)
