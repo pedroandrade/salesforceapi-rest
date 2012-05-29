@@ -112,7 +112,7 @@ module Salesforceapi
         xml_response = Crack::XML.parse(resp.body)
 
         if resp.code != 200
-          SalesforceApi::Errors::ErrorManager.raise_error("HTTP code " + resp.code.to_s, resp.code)
+          SalesforceApi::Errors::ErrorManager.raise_error("HTTP code " + resp.code.to_s + " xml response: " + resp.body, resp.code)
         else
           return xml_response
         end
