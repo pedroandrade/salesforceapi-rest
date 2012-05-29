@@ -26,22 +26,14 @@ module Salesforceapi
         headers (auth_setting)
       end
 
-      def initialize(oauth_token, instance_uri, metadata_uri, api_version = "v21.0")
-        @oauth_token = oauth_token
-        @instance_uri = instance_uri
+      def initialize(refresh_token, metadata_uri, client_id, client_secret)
+        @refresh_token = refresh_token
+        @client_id = client_id
+        @client_secret = client_secret
         @metadata_uri = metadata_uri
         @api_version = api_version ? api_version : "v21.0"  #take a dynamic api server version
         @full_url = instance_uri + "/services/data/#{api_version}/sobjects"
         @ssl_port = 443  # TODO, right SF use port 443 for all HTTPS traffic.
-
-
-        # To be used by HTTParty
-        @auth_header = {
-          "Authorization" => "OAuth " + @oauth_token,
-          "content-Type" => 'application/json'
-        }
-
-        self.class.base_uri @instance_uri
 
       end
 
@@ -50,6 +42,8 @@ module Salesforceapi
 
         path = "/services/data/#{@api_version}/sobjects/#{object}/"
         target = @instance_uri + path
+
+        config_authorization!
 
         self.class.base_uri @instance_uri
 
@@ -70,6 +64,7 @@ module Salesforceapi
         path = "/services/data/#{@api_version}/sobjects/#{object}/describe"
         target = @instance_uri + path
 
+        config_authorization!
         self.class.base_uri @instance_uri
 
         resp = SalesforceApi::Request.do_request("GET", target, @auth_header, nil)
@@ -85,6 +80,8 @@ module Salesforceapi
         path = "/services/data/#{@api_version}"
         target = @instance_uri + path
 
+        config_authorization!
+
         self.class.base_uri @instance_uri
 
         resp = SalesforceApi::Request.do_request("GET", target, @auth_header, nil)
@@ -96,6 +93,26 @@ module Salesforceapi
         end
       end
 
+      def config_authorization!
+        target = 'https://login.salesforce.com/services/oauth2/token'
+        parameters = {:grand_type => 'refresh_token', :client_id => @client_id, :client_secret => @client_secret,
+          :refresh_token => @refresh_token}
+        data = ActiveSupport::JSON::encode(parameters)
+        resp = SalesforceApi::Request.do_request("POST", target, "content-Type" => 'application/json', parameters)
+        if (resp.code != 200) || !resp.success?
+          message = ActiveSupport::JSON.decode(resp.body)[0]["message"]
+          SalesforceApi::Errors::ErrorManager.raise_error("Authentication problem!", 401)
+        else
+          response = ActiveSupport::JSON.decode(resp.body)
+        end
+        @instance_uri = response['instance_url']
+        @access_token = response['access_token']
+        @auth_header = {
+          "Authorization" => "OAuth " + @access_token,
+          "content-Type" => 'application/json'
+        }
+      end
+
 
       def add_custom_field(attributes)
         auth_header = {
@@ -104,6 +121,7 @@ module Salesforceapi
           'Content-Type' => 'text/xml',
           'SOAPAction' => '""'
         }
+        config_authorization
         self.class.base_uri @metadata_uri
 
         data = (Envelope % [@oauth_token, custom_fields_xml(attributes)])
