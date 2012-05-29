@@ -39,10 +39,9 @@ module Salesforceapi
 
       def create(object, attributes)
 
+        config_authorization!
         path = "/services/data/#{@api_version}/sobjects/#{object}/"
         target = @instance_uri + path
-
-        config_authorization!
 
         self.class.base_uri @instance_uri
 
@@ -61,9 +60,9 @@ module Salesforceapi
 
       def describe(object)
         path = "/services/data/#{@api_version}/sobjects/#{object}/describe"
+        config_authorization
         target = @instance_uri + path
 
-        config_authorization!
         self.class.base_uri @instance_uri
 
         resp = SalesforceApi::Request.do_request("GET", target, @auth_header, nil)
@@ -77,9 +76,8 @@ module Salesforceapi
 
       def resources
         path = "/services/data/#{@api_version}"
-        target = @instance_uri + path
-
         config_authorization!
+        target = @instance_uri + path
 
         self.class.base_uri @instance_uri
 
@@ -114,13 +112,14 @@ module Salesforceapi
 
 
       def add_custom_field(attributes)
+        config_authorization!
         auth_header = {
           "Authorization" => "OAuth " + @oauth_token,
           'Connection' => 'Keep-Alive',
           'Content-Type' => 'text/xml',
           'SOAPAction' => '""'
         }
-        config_authorization
+
         self.class.base_uri @metadata_uri
 
         data = (Envelope % [@oauth_token, custom_fields_xml(attributes)])
