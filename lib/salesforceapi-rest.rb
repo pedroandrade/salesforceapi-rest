@@ -98,7 +98,7 @@ module Salesforceapi
         parameters = {:grand_type => 'refresh_token', :client_id => @client_id, :client_secret => @client_secret,
           :refresh_token => @refresh_token}
         data = ActiveSupport::JSON::encode(parameters)
-        resp = SalesforceApi::Request.do_request("POST", target, "content-Type" => 'application/json', parameters)
+        resp = SalesforceApi::Request.do_request("POST", target, {"content-Type" => 'application/json'}, parameters)
         if (resp.code != 200) || !resp.success?
           message = ActiveSupport::JSON.decode(resp.body)[0]["message"]
           SalesforceApi::Errors::ErrorManager.raise_error("Authentication problem!", 401)
