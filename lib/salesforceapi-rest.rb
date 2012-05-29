@@ -111,7 +111,7 @@ module Salesforceapi
       def add_custom_field(attributes)
         config_authorization!
         auth_header = {
-          "Authorization" => "OAuth " + @oauth_token,
+          "Authorization" => "OAuth " + @access_token,
           'Connection' => 'Keep-Alive',
           'Content-Type' => 'text/xml',
           'SOAPAction' => '""'
