@@ -63,7 +63,7 @@ module SalesforceApi
     end
 
     # Error for HTTP code 500, Force.com Internal Server error
-    class Platformrror < ApiError
+    class PlatformError < ApiError
       def initialize(message, http_code)
         super(message, http_code)
       end

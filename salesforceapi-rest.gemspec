@@ -19,6 +19,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "rforce"
   gem.add_development_dependency "omniauth"
   gem.add_development_dependency "httparty"
-  gem.add_development_dependency "active_resource"
-
+  gem.add_development_dependency "activeresource"
+  gem.add_development_dependency "crack"
+  gem.add_development_dependency "builder"
 end
