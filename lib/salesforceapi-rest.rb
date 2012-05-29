@@ -32,7 +32,6 @@ module Salesforceapi
         @client_secret = client_secret
         @metadata_uri = metadata_uri
         @api_version = "v21.0"
-        @full_url = instance_uri + "/services/data/#{api_version}/sobjects"
         @ssl_port = 443  # TODO, right SF use port 443 for all HTTPS traffic.
 
       end
