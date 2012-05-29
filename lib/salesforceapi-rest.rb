@@ -97,17 +97,17 @@ module Salesforceapi
         data = ActiveSupport::JSON::encode(parameters)
         resp = SalesforceApi::Request.do_request("POST", target, {"content-Type" => 'application/json'}, parameters)
         if (resp.code != 200) || !resp.success?
-          SalesforceApi::Errors::ErrorManager.raise_error(resp.body, 401)
+          message = ActiveSupport::JSON.decode(resp.body)["error_description"]
+          SalesforceApi::Errors::ErrorManager.raise_error("Authentication problem!", 401)
         else
           response = ActiveSupport::JSON.decode(resp.body)
-          @instance_uri = response['instance_url']
-          @access_token = response['access_token']
-          @auth_header = {
-            "Authorization" => "OAuth " + @access_token,
-            "content-Type" => 'application/json'
-          }
         end
-
+        @instance_uri = response['instance_url']
+        @access_token = response['access_token']
+        @auth_header = {
+          "Authorization" => "OAuth " + @access_token,
+          "content-Type" => 'application/json'
+        }
       end
 
 
