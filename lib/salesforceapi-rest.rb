@@ -60,7 +60,7 @@ module Salesforceapi
 
       def describe(object)
         path = "/services/data/#{@api_version}/sobjects/#{object}/describe"
-        config_authorization
+        config_authorization!
         target = @instance_uri + path
 
         self.class.base_uri @instance_uri
