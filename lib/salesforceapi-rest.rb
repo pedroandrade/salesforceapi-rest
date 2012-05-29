@@ -98,7 +98,7 @@ module Salesforceapi
         resp = SalesforceApi::Request.do_request("POST", target, {"content-Type" => 'application/json'}, parameters)
         if (resp.code != 200) || !resp.success?
           message = ActiveSupport::JSON.decode(resp.body)["error_description"]
-          SalesforceApi::Errors::ErrorManager.raise_error("Authentication problem!", 401)
+          SalesforceApi::Errors::ErrorManager.raise_error(message, 401)
         else
           response = ActiveSupport::JSON.decode(resp.body)
         end
