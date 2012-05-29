@@ -119,7 +119,7 @@ module Salesforceapi
 
         self.class.base_uri @metadata_uri
 
-        data = (Envelope % [@oauth_token, custom_fields_xml(attributes)])
+        data = (Envelope % [@access_token, custom_fields_xml(attributes)])
         resp = SalesforceApi::Request.do_request("POST", @metadata_uri, auth_header, data.lstrip)
 
         xml_response = Crack::XML.parse(resp.body)
