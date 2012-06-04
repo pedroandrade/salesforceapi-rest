@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-    @sf = SalesforceApi::Rest:Client(refresh_token, metadata_url, client_id, client_secret)
+    @sf = SalesforceApi::Rest:Client.new(refresh_token, metadata_url, client_id, client_secret)
     
 To create a sobject:
     
