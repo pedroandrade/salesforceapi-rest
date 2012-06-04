@@ -36,9 +36,9 @@ Creating custom fields
 
     @sf.add_custom_field({:fullName => "Lead.MyCustomField__c", :label => "My Custom Field", :type => "Text"})
 
-  ## License
+## License
 
-  ###(The MIT License)
+###(The MIT License)
 
   Copyright (c) 2012 Lucas Allan Amorim (www.lucasallan.com)
 
