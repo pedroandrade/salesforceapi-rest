@@ -108,7 +108,7 @@ module Salesforceapi
       end
 
 
-      def add_custom_field(attributes)
+      def add_custom_field(attributes, update = false)
         config_authorization!
         auth_header = {
           "Authorization" => "OAuth " + @access_token,
@@ -120,8 +120,11 @@ module Salesforceapi
         self.class.base_uri @metadata_uri
 
         data = (Envelope % [@access_token, custom_fields_xml(attributes)])
-        resp = SalesforceApi::Request.do_request("POST", @metadata_uri, auth_header, data.lstrip)
-
+        if update
+          resp = SalesforceApi::Request.do_request("POST", @metadata_uri, auth_header, data.lstrip)
+        else
+          resp = SalesforceApi::Request.do_request("PUT", @metadata_uri, auth_header, data.lstrip)
+        end
         xml_response = Crack::XML.parse(resp.body)
 
         if resp.code != 200
