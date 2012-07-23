@@ -1,7 +1,7 @@
 module SalesforceApi
   module Errors
 
-    class ApiError < RuntimeError
+    class ApiError < StandardError
 
       attr_accessor :http_code
 
