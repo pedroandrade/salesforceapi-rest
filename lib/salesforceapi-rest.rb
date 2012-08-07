@@ -7,6 +7,7 @@ require 'active_resource'
 require 'httparty'
 require 'builder'
 require 'crack/xml'
+require 'cgi'
 
 module Salesforceapi
   module Rest
@@ -91,7 +92,7 @@ module Salesforceapi
       end
 
       def config_authorization!
-        target = target = "https://login.salesforce.com/services/oauth2/token?grant_type=refresh_token&client_id=#{@client_id}&client_secret=#{@client_secret}&refresh_token=#{@refresh_token}"
+        target = CGI::unescape("https://login.salesforce.com/services/oauth2/token?grant_type=refresh_token&client_id=#{@client_id}&client_secret=#{@client_secret}&refresh_token=#{@refresh_token}")
         resp = SalesforceApi::Request.do_request("POST", target, {"content-Type" => 'application/json'}, nil)
         if (resp.code != 200) || !resp.success?
           message = ActiveSupport::JSON.decode(resp.body)["error_description"]
@@ -108,7 +109,7 @@ module Salesforceapi
       end
 
 
-      def add_custom_field(attributes, update = false)
+      def add_custom_field(attributes)
         config_authorization!
         auth_header = {
           "Authorization" => "OAuth " + @access_token,
@@ -120,11 +121,7 @@ module Salesforceapi
         self.class.base_uri @metadata_uri
 
         data = (Envelope % [@access_token, custom_fields_xml(attributes)])
-        if update
-          resp = SalesforceApi::Request.do_request("POST", @metadata_uri, auth_header, data.lstrip)
-        else
-          resp = SalesforceApi::Request.do_request("PUT", @metadata_uri, auth_header, data.lstrip)
-        end
+        resp = SalesforceApi::Request.do_request("POST", @metadata_uri, auth_header, data.lstrip)
         xml_response = Crack::XML.parse(resp.body)
 
         if resp.code != 200
