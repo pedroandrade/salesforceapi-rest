@@ -1,8 +1,6 @@
-# Salesforceapi::Rest
+## Salesforceapi::Rest
 
-TODO: Write a gem description
-
-## Installation
+### Installation
 
 Add this line to your application's Gemfile:
 
@@ -16,27 +14,23 @@ Or install it yourself as:
 
     $ gem install salesforceapi-rest
 
-## Usage
+### Usage
 
     @sf = SalesforceApi::Rest:Client.new(refresh_token, metadata_url, client_id, client_secret)
-    
+
 To create a sobject:
-    
+
     @sf.create(:lead, {:Company => "Company Name", :LastName => "Allan", :Email => "lucas@email.com"})
 
 To get resources information
 
     @sf.resources
-  
+
 To get resources describe
 
     @sf.describe(:lead)
-    
-Creating custom fields
 
-    @sf.add_custom_field({:fullName => "Lead.MyCustomField__c", :label => "My Custom Field", :type => "Text"})
-
-## License
+### License
 
 ###(The MIT License)
 
