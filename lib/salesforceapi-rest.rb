@@ -40,17 +40,7 @@ module Salesforceapi
         path = "/services/data/#{@api_version}/sobjects/#{object}/"
         target = @instance_uri + path
 
-        self.class.base_uri @instance_uri
-
-        resp = post_request(target, @auth_header, attributes)
-        # HTTP code 201 means it was successfully saved.
-        if resp.code != 201
-          message = ActiveSupport::JSON.decode(resp.body)[0]["message"]
-          SalesforceApi::Errors::ErrorManager.raise_error("HTTP code " + resp.code.to_s + ": " + message, resp.code)
-        else
-          return ActiveSupport::JSON.decode(resp.body)
-        end
-
+        post(target, @auth_header, attributes)
       end
 
       def describe(object)
@@ -58,15 +48,7 @@ module Salesforceapi
         config_authorization!
         target = @instance_uri + path
 
-        self.class.base_uri @instance_uri
-
-        resp = get_request(target, @auth_header)
-        if (resp.code != 200) || !resp.success?
-          message = ActiveSupport::JSON.decode(resp.body)[0]["message"]
-          SalesforceApi::Errors::ErrorManager.raise_error("HTTP code " + resp.code.to_s + ": " + message, resp.code)
-        else
-          return ActiveSupport::JSON.decode(resp.body)
-        end
+        get(target, @auth_header)
       end
 
       def resources
@@ -74,15 +56,7 @@ module Salesforceapi
         config_authorization!
         target = @instance_uri + path
 
-        self.class.base_uri @instance_uri
-
-        resp = get_request(target, @auth_header)
-        if (resp.code != 200) || !resp.success?
-          message = ActiveSupport::JSON.decode(resp.body)[0]["message"]
-          SalesforceApi::Errors::ErrorManager.raise_error("HTTP code " + resp.code.to_s + ": " + message, resp.code)
-        else
-          return ActiveSupport::JSON.decode(resp.body)
-        end
+        get(target, @auth_header)
       end
 
       def config_authorization!
