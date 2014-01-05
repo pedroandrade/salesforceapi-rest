@@ -20,7 +20,7 @@ Or install it yourself as:
 
 To create a sobject:
 
-    @sf.create(:lead, {:Company => "Company Name", :LastName => "Allan", :Email => "lucas@email.com"})
+    @sf.create(:lead, {Company: "Company Name", LastName: "Allan", Email: "lucas@email.com"})
 
 To get resources information
 
