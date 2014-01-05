@@ -2,8 +2,8 @@
 require File.expand_path('../lib/salesforceapi-rest/version', __FILE__)
 
 Gem::Specification.new do |gem|
-  gem.authors       = ["Lucas Allan Amorim"]
-  gem.email         = ["lucas.allan@gmail.com"]
+  gem.authors       = ["Pedro Andrade", "Lucas Allan Amorim"]
+  gem.email         = ["pedro.rjandrade@gmail.com", "lucas.allan@gmail.com"]
   gem.description   = %q{Ruby wrapper to access salesforce rest api}
   gem.summary       = %q{Ruby wrapper to access salesforce rest api}
   gem.homepage      = ""
@@ -22,4 +22,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "activeresource"
   gem.add_development_dependency "crack"
   gem.add_development_dependency "builder"
+  gem.add_development_dependency "rack-test"
 end
