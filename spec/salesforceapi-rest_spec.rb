@@ -1,10 +1,8 @@
 require 'spec_helper'
 
-describe SalesforceApi::Rest::Client do
+describe Salesforceapi::Rest::Client do
 
-  before do
-    @client = SalesforceApi::Rest::Client.new("my_token", "salesforce.com")
-  end
+  let(:client) { SalesforceApi::Rest::Client.new("my_token", "salesforce.com") }
 
   it "should get the resources information" do
     SalesforceApi::Request.should_receive(:do_request).with("GET", "salesforce.com/services/data/v21.0",
