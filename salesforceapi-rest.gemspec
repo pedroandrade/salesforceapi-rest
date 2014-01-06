@@ -23,4 +23,6 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "crack"
   gem.add_development_dependency "builder"
   gem.add_development_dependency "rack-test"
+  gem.add_development_dependency "vcr"
+  gem.add_development_dependency "webmock"
 end
