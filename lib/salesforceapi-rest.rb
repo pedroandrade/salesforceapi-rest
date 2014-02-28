@@ -39,7 +39,6 @@ module Salesforceapi
 
 
       def create(object, attributes)
-
         config_authorization!
         path = "/services/data/#{@api_version}/sobjects/#{object}/"
         target = @instance_uri + path
@@ -56,7 +55,23 @@ module Salesforceapi
         else
           return ActiveSupport::JSON.decode(resp.body)
         end
+      end
 
+      def update(object, attributes, id)
+        config_authorization!
+        path = "/services/data/#{@api_version}/sobjects/#{object}/#{id}"
+        target = @instance_uri + path
+
+        self.class.base_uri @instance_uri
+
+        data = ActiveSupport::JSON::encode(attributes)
+        resp = SalesforceApi::Request.do_request("PATCH", target, @auth_header, data)
+
+        if resp.code != 204
+          message = ActiveSupport::JSON.decode(resp.body)[0]["message"]
+          SalesforceApi::Errors::ErrorManager.raise_error("HTTP code " + resp.code.to_s + ": " + message, resp.code)
+        end
+        resp
       end
 
       def describe(object)
@@ -73,6 +88,7 @@ module Salesforceapi
         else
           return ActiveSupport::JSON.decode(resp.body)
         end
+        resp
       end
 
       def resources

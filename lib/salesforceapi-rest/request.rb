@@ -9,6 +9,8 @@ module SalesforceApi
         return resp = HTTParty.get(CGI::unescape(target), :headers => headers)
       when 'POST'
         return resp = HTTParty.post(CGI::unescape(target), :body => data, :headers => headers)
+      when 'PATCH'
+        return resp = HTTParty.patch(CGI::unescape(target), :body => data, :headers => headers)
       when 'DELETE'
         return resp = HTTParty.delete(CGI::unescape(target), :headers => headers)
       end
