@@ -59,7 +59,7 @@ module Salesforceapi
 
       def config_authorization!
         target = CGI::unescape("https://login.salesforce.com/services/oauth2/token?grant_type=refresh_token&client_id=#{@client_id}&client_secret=#{@client_secret}&refresh_token=#{@refresh_token}")
-        resp = SalesforceApi::Request.do_request("POST", target, {"content-Type" => 'application/json'}, nil)
+        resp = post(target, {"content-Type" => 'application/json'})
         if (resp.code != 200) || !resp.success?
           message = ActiveSupport::JSON.decode(resp.body)["error_description"]
           SalesforceApi::Errors::ErrorManager.raise_error(message, 401)
