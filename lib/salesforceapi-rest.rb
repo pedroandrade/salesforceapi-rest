@@ -33,10 +33,10 @@ module Salesforceapi
         @api_version = "v21.0"
         @ssl_port = 443  # TODO, right SF use port 443 for all HTTPS traffic.
 
+        config_authorization!
       end
 
       def create(object, attributes)
-        config_authorization!
         path = "/services/data/#{@api_version}/sobjects/#{object}/"
         target = @instance_uri + path
 
@@ -45,7 +45,6 @@ module Salesforceapi
 
       def describe(object)
         path = "/services/data/#{@api_version}/sobjects/#{object}/describe"
-        config_authorization!
         target = @instance_uri + path
 
         get(target, @auth_header)
@@ -53,7 +52,6 @@ module Salesforceapi
 
       def resources
         path = "/services/data/#{@api_version}"
-        config_authorization!
         target = @instance_uri + path
 
         get(target, @auth_header)
