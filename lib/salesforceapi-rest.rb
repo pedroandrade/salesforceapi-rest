@@ -30,7 +30,7 @@ module Salesforceapi
         @client_id = client_id
         @client_secret = client_secret
         @metadata_uri = metadata_uri
-        @api_version = "v21.0"
+        @api_version = "v54.0"
         @ssl_port = 443  # TODO, right SF use port 443 for all HTTPS traffic.
 
       end
@@ -60,6 +60,10 @@ module Salesforceapi
       end
 
       def config_authorization!
+        @authorization_configured ||= do_config_authorization!
+      end
+
+      def do_config_authorization!
         target = CGI::unescape("https://login.salesforce.com/services/oauth2/token?grant_type=refresh_token&client_id=#{@client_id}&client_secret=#{@client_secret}&refresh_token=#{@refresh_token}")
         resp = SalesforceApi::Request.do_request("POST", target, {"content-Type" => 'application/json'}, nil)
         if (resp.code != 200) || !resp.success?
@@ -74,6 +78,7 @@ module Salesforceapi
           "Authorization" => "OAuth " + @access_token,
           "content-Type" => 'application/json'
         }
+        true
       end
     end
   end
